@@ -1,0 +1,177 @@
+
+============================================================
+CASO 1 - Declaraciones validas int y float
+============================================================
+Codigo fuente:
+int cantidad = 4;
+float tarifa = 12.5;
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  cantidad          int       1
+  tarifa            float     2
+Esperado: VALIDO
+Obtenido: VALIDO
+Prueba: OK
+
+============================================================
+CASO 2 - Literal string entre comillas dobles
+============================================================
+Codigo fuente:
+string ciudad = "Huancayo";
+Tokens:
+  <KW_STRING, 'string'> [1:1]
+  <IDENTIFICADOR, 'ciudad'> [1:8]
+  <ASIGNACION, '='> [1:15]
+  <CADENA, '"Huancayo"'> [1:17]
+  <PUNTO_COMA, ';'> [1:27]
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  ciudad            string    1
+Esperado: VALIDO
+Obtenido: VALIDO
+Prueba: OK
+
+============================================================
+CASO 3 - Declaracion duplicada
+============================================================
+Codigo fuente:
+int cantidad = 4;
+int cantidad = 8;
+Errores semanticos:
+  [SEMANTICO] linea 2, columna 5, lexema 'cantidad': Declaracion duplicada en el mismo ambito.
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  cantidad          int       1
+Esperado: INVALIDO
+Obtenido: INVALIDO
+Prueba: OK
+
+============================================================
+CASO 4 - Identificador no declarado
+============================================================
+Codigo fuente:
+int total = precio;
+Errores semanticos:
+  [SEMANTICO] linea 1, columna 13, lexema 'precio': Identificador usado sin declaracion previa.
+Esperado: INVALIDO
+Obtenido: INVALIDO
+Prueba: OK
+
+============================================================
+CASO 5 - Error sintactico
+============================================================
+Codigo fuente:
+int cantidad 10;
+Errores sintacticos:
+  [SINTACTICO] linea 1, columna 14, lexema '10': Se esperaba '=' despues del identificador.
+Esperado: INVALIDO
+Obtenido: INVALIDO
+Prueba: OK
+
+============================================================
+CASO 6 - Error lexico y continuacion del analisis
+============================================================
+Codigo fuente:
+int lote = 10 @;
+float tarifa = 8.5;
+Errores lexicos:
+  [LEXICO] linea 1, columna 15, lexema '@': Caracter no reconocido.
+Errores sintacticos:
+  [SINTACTICO] linea 1, columna 15, lexema '@': Se esperaba ';' al final de la declaracion.
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  tarifa            float     2
+Esperado: INVALIDO
+Obtenido: INVALIDO
+Prueba: OK
+
+============================================================
+CASO 7 - Codigo de varias lineas
+============================================================
+Codigo fuente:
+int cantidad = 3;
+float precio = 12.5;
+float subtotal = precio * cantidad;
+string producto = "MIEL_MANTARO";
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  cantidad          int       1
+  precio            float     2
+  subtotal          float     3
+  producto          string    4
+Esperado: VALIDO
+Obtenido: VALIDO
+Prueba: OK
+
+============================================================
+CASO 8 - Generacion de codigo de tres direcciones
+============================================================
+Codigo fuente:
+float distancia = 120.0;
+float tarifa = 1.5;
+float peaje = 8.0;
+float costo = distancia * tarifa + peaje;
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  distancia         float     1
+  tarifa            float     2
+  peaje             float     3
+  costo             float     4
+Codigo de tres direcciones - ANTES:
+  distancia = 120.0
+  tarifa = 1.5
+  peaje = 8.0
+  t1 = distancia * tarifa
+  t2 = t1 + peaje
+  costo = t2
+Esperado: VALIDO
+Obtenido: VALIDO
+Prueba: OK
+
+============================================================
+CASO 9 - Optimizacion local por plegado de constantes
+============================================================
+Codigo fuente:
+int resultado = 2 + 3;
+Tabla de simbolos:
+  Identificador     Tipo      Linea
+  resultado         int       1
+Codigo de tres direcciones - ANTES:
+  t1 = 2 + 3
+  resultado = t1
+Codigo optimizado - DESPUES:
+  resultado = 5
+Esperado: VALIDO
+Obtenido: VALIDO
+Prueba: OK
+
+============================================================
+CASO 10 - Compatibilidad de tipos
+============================================================
+Codigo fuente:
+int edad = 20.5;
+Errores semanticos:
+  [SEMANTICO] linea 1, columna 5, lexema 'edad': Tipo incompatible: no se puede asignar float a int.
+Esperado: INVALIDO
+Obtenido: INVALIDO
+Prueba: OK
+
+============================================================
+CASO 11 - Optimizacion de identidades algebraicas
+============================================================
+Codigo fuente:
+int resultado = 5 * 1 + 0;
+Codigo de tres direcciones - ANTES:
+  t1 = 5 * 1
+  t2 = t1 + 0
+  resultado = t2
+Codigo optimizado - DESPUES:
+  resultado = 5
+Esperado: VALIDO
+Obtenido: VALIDO
+Prueba: OK
+
+============================================================
+RESUMEN DE PRUEBAS
+Correctas: 11 de 11
+============================================================

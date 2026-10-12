@@ -1,0 +1,4 @@
+int cantidad = 3;
+float precio = 12.5;
+float subtotal = precio * cantidad;
+string producto = "MIEL_MANTARO";

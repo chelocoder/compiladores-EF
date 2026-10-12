@@ -1,0 +1,8 @@
+Compilar: 
+
+cl /EHsc /std:c++17 main.cpp Lexer.cpp Parser.cpp AnalizadorSemantico.cpp GeneradorCodigo.cpp Optimizador.cpp
+
+Ejecutar:
+
+.\main.exe
+
